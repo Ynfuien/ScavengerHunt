@@ -1,0 +1,12 @@
+name: '${project.name}'
+version: '${project.version}'
+main: pl.ynfuien.scavengerHunt.ScavengerHunt
+api-version: '1.21'
+authors: [ Ynfuien ]
+description: '${project.description}'
+
+commands:
+  scavengerhunt:
+    aliases: [hunt]
+    description: Main plugin command
+    permission: scavengerhunt.command

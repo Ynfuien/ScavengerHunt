@@ -1,0 +1,6 @@
+name: ScavengerHunt
+version: '0.0.1'
+main: pl.ynfuien.scavengerHunt.ScavengerHunt
+api-version: '1.21'
+authors: [ Ynfuien ]
+description: A simple scavenger hunt plugin
