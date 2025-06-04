@@ -1,0 +1,91 @@
+tasks:
+  find-item:
+    enabled: true
+
+    # List of items that will not be considered when choosing
+    # an item for the task. The list of considered items is
+    # based on available recipes. Anything that is used
+    # for or is a result of any recipe, will be considered
+    # when generating a task.
+    blacklist:
+      - DIAMOND_SWORD
+      - DIAMOND_PICKAXE
+      - DIAMOND_AXE
+      - DIAMOND_SHOVEL
+      - DIAMOND_HOE
+      - DIAMOND_HELMET
+      - DIAMOND_CHESTPLATE
+      - DIAMOND_LEGGINGS
+      - DIAMOND_BOOTS
+      - NETHERITE_SWORD
+      - NETHERITE_PICKAXE
+      - NETHERITE_AXE
+      - NETHERITE_SHOVEL
+      - NETHERITE_HOE
+      - NETHERITE_HELMET
+      - NETHERITE_CHESTPLATE
+      - NETHERITE_LEGGINGS
+      - NETHERITE_BOOTS
+
+    # Whether to consume found item upon completing the task.
+    consume: false
+
+  kill-mob:
+    enabled: true
+
+    # List of mobs to not be chosen for a task.
+    blacklist:
+      - ENDER_DRAGON
+      - WITHER
+
+
+hunts:
+  # Whether to automatically assign new hunt for players
+  # after they finish the one before.
+  auto-assign: true
+
+  task-amount:
+    min: 5
+    max: 8
+
+  # Time limit in hours
+  time-limit: 48
+
+  # Rewards that will be given to the players for completing the tasks.
+  rewards:
+    # Experience amount in levels.
+    experience:
+      enabled: true
+      min: 0
+      max: 10
+
+    # Items to give.
+    # Will be randomly chosen only one from the list
+    # and given the random amount between min and max.
+    items:
+      enabled: true
+      list:
+        DIAMOND:
+          min: 0
+          max: 3
+        EMERALD:
+          min: 0
+          max: 3
+        GOLD_INGOT:
+          min: 0
+          max: 3
+        IRON_INGOT:
+          min: 0
+          max: 3
+        STONE:
+          min: 1
+          max: 16
+        DIRT:
+          min: 1
+          max: 64
+
+#    # Requires Vault and an economy plugin on the server.
+#    money:
+#      enabled: true
+#      min: 0
+#      max: 1000

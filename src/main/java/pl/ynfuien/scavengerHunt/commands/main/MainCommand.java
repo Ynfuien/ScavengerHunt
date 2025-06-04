@@ -1,14 +1,28 @@
 package pl.ynfuien.scavengerHunt.commands.main;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.ynfuien.scavengerHunt.Lang;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.scavengerHunt.commands.Subcommand;
+import pl.ynfuien.scavengerHunt.commands.main.subcommands.ReloadSubcommand;
+import pl.ynfuien.scavengerHunt.core.hunts.Hunt;
+import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
+import pl.ynfuien.scavengerHunt.core.tasks.ItemTask;
+import pl.ynfuien.scavengerHunt.core.tasks.MobTask;
+import pl.ynfuien.scavengerHunt.core.tasks.Task;
+import pl.ynfuien.ydevlib.messages.colors.ColorFormatter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,13 +31,15 @@ import java.util.List;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
     private final ScavengerHunt instance;
+    private final Hunts hunts;
     private final Subcommand[] subcommands;
 
     public MainCommand(ScavengerHunt instance) {
         this.instance = instance;
+        this.hunts = instance.getHunts();
 
         this.subcommands = new Subcommand[] {
-//                new ReloadSubcommand(instance),
+                new ReloadSubcommand(instance),
 //                new GiveSubcommand(instance)
         };
     }
@@ -33,7 +49,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         HashMap<String, Object> placeholders = new HashMap<>() {{put("command", label);}};
 
         if (args.length == 0) {
-            Lang.Message.COMMAND_MAIN_USAGE.send(sender, placeholders);
+            info(sender, placeholders);
             return true;
         }
 
@@ -49,8 +65,65 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        Lang.Message.COMMAND_MAIN_USAGE.send(sender, placeholders);
+        info(sender, placeholders);
         return true;
+    }
+
+    private void info(CommandSender sender, HashMap<String, Object> placeholders) {
+        if (!(sender instanceof Player player)) {
+            Lang.Message.COMMAND_USAGE.send(sender, placeholders);
+            return;
+        }
+
+        Hunt hunt = hunts.getHunt(player);
+        if (hunt == null) {
+            Lang.Message.COMMAND_HUNT_INFO_NO_ASSIGNMENT.send(sender);
+            return;
+        }
+
+        List<Task> tasks = hunt.getTasks();
+
+        placeholders.put("completed-task-count", hunt.getCompletedTaskCount());
+        placeholders.put("task-count", tasks.size());
+        Lang.Message.COMMAND_HUNT_INFO_HEADER.send(sender, placeholders);
+
+        for (Task task : tasks) {
+            if (task instanceof ItemTask itemTask) {
+                Material item = itemTask.getItem();
+                String displayName = ColorFormatter.SERIALIZER.serialize(new ItemStack(item).effectiveName().color(null));
+                placeholders.put("item-display-name", displayName);
+                placeholders.put("item-display-name-lower-case", displayName.toLowerCase());
+                placeholders.put("item-display-name-upper-case", displayName.toUpperCase());
+                placeholders.put("item-name", item.name());
+
+                if (itemTask.isCompleted()) {
+                    Lang.Message.COMMAND_HUNT_INFO_TASK_ITEM_COMPLETED.send(player, placeholders);
+                    continue;
+                }
+
+                Lang.Message.COMMAND_HUNT_INFO_TASK_ITEM.send(player, placeholders);
+                continue;
+            }
+
+            if (task instanceof MobTask mobTask) {
+                EntityType mob = mobTask.getMob();
+
+
+                String displayName = ColorFormatter.SERIALIZER.serialize(Component.translatable(mob.translationKey()));
+                placeholders.put("mob-display-name", displayName);
+                placeholders.put("mob-display-name-lower-case", displayName.toLowerCase());
+                placeholders.put("mob-display-name-upper-case", displayName.toUpperCase());
+                placeholders.put("mob-name", mob.name());
+
+                if (mobTask.isCompleted()) {
+                    Lang.Message.COMMAND_HUNT_INFO_TASK_MOB_COMPLETED.send(player, placeholders);
+                    continue;
+                }
+
+                Lang.Message.COMMAND_HUNT_INFO_TASK_MOB.send(player, placeholders);
+                continue;
+            }
+        }
     }
 
     @Override

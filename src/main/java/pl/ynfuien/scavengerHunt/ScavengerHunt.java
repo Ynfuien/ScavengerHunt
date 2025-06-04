@@ -7,10 +7,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import pl.ynfuien.scavengerHunt.commands.main.MainCommand;
+import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
+import pl.ynfuien.scavengerHunt.core.tasks.Tasks;
+import pl.ynfuien.scavengerHunt.listeners.PlayerJoinListener;
 import pl.ynfuien.ydevlib.config.ConfigHandler;
 import pl.ynfuien.ydevlib.config.ConfigObject;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,17 +26,44 @@ public final class ScavengerHunt extends JavaPlugin {
     private final ConfigHandler configHandler = new ConfigHandler(this);
     private ConfigObject config;
 
+    private final Tasks tasks = new Tasks(this);
+    private final Hunts hunts = new Hunts(this);
+
     @Override
     public void onEnable() {
         instance = this;
 
         // Set logger prefix
-        YLogger.setup("<dark_aqua><gradient:gold:yellow>ScavengerHunt</gradient><dark_aqua>] <white>", getComponentLogger());
+        YLogger.setup("<gold>[<yellow>ScavengerHunt<gold>] <white>", getComponentLogger());
+        YLogger.setDebugging(true);
+
+        // TMP lang deleting
+        File folder = getDataFolder();
+        if (folder.exists() && folder.isDirectory()) {
+            File langFile = new File(folder, "lang.yml");
+            if (langFile.exists()) {
+                try {
+                    langFile.delete();
+                } catch (SecurityException ignore) {}
+            }
+        }
 
         // Configuration
         loadConfigs();
         loadLang();
         config = configHandler.getConfigObject(ConfigName.CONFIG);
+
+        FileConfiguration config = this.config.getConfig();
+        if (!tasks.load(config.getConfigurationSection("tasks"))) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        if (!hunts.load(config.getConfigurationSection("hunts"))) {
+            YLogger.error("Plugin couldn't load 'hunts' configuration!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
         setupCommands();
         registerListeners();
@@ -40,13 +73,12 @@ public final class ScavengerHunt extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
         YLogger.info("Plugin successfully <red>disabled<white>!");
     }
 
     private void setupCommands() {
         HashMap<String, CommandExecutor> commands = new HashMap<>();
-//        commands.put("ygenerators", new MainCommand(this));
+        commands.put("scavengerhunt", new MainCommand(this));
 //        commands.put("doubledrop", new DoubledropCommand(this));
 
         for (String name : commands.keySet()) {
@@ -59,14 +91,7 @@ public final class ScavengerHunt extends JavaPlugin {
 
     private void registerListeners() {
         Listener[] listeners = new Listener[] {
-//                new BlockBreakListener(this),
-//                new BlockFormListener(this),
-//                new BlockPistonExtendListener(this),
-//                new BlockPistonRetractListener(this),
-//                new BlockPlaceListener(this),
-//                new EntityExplodeListener(this),
-//                new PlayerInteractListener(this),
-//                new PrepareItemCraftListener(this)
+                new PlayerJoinListener(this),
         };
 
         for (Listener listener : listeners) {
@@ -75,7 +100,7 @@ public final class ScavengerHunt extends JavaPlugin {
     }
 
     private void loadConfigs() {
-        configHandler.load(ConfigName.CONFIG, true, false, List.of("vanilla-generators.blocks"));
+        configHandler.load(ConfigName.CONFIG, true, false, List.of("hunts.rewards.items.list"));
         configHandler.load(ConfigName.LANG, true, true);
     }
 
@@ -128,5 +153,17 @@ public final class ScavengerHunt extends JavaPlugin {
     @Override
     public @NotNull FileConfiguration getConfig() {
         return config.getConfig();
+    }
+
+    public Tasks getTasks() {
+        return tasks;
+    }
+
+    public Hunts getHunts() {
+        return hunts;
+    }
+
+    public static int randomBetween(int min, int max) {
+        return (int) (Math.random() * (max - min) + min);
     }
 }

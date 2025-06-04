@@ -12,12 +12,16 @@ import java.util.HashMap;
 public class Lang extends LangBase {
     public enum Message implements LangBase.Message {
         PREFIX,
-        NO_PERMISSION,
-        ONLY_PLAYER,
-        COMMAND_MAIN_USAGE,
-        COMMAND_GIVE_USAGE,
+        COMMAND_USAGE,
         COMMAND_RELOAD_FAIL,
         COMMAND_RELOAD_SUCCESS,
+        HUNT_ASSIGNED,
+        COMMAND_HUNT_INFO_HEADER,
+        COMMAND_HUNT_INFO_TASK_ITEM,
+        COMMAND_HUNT_INFO_TASK_ITEM_COMPLETED,
+        COMMAND_HUNT_INFO_TASK_MOB,
+        COMMAND_HUNT_INFO_TASK_MOB_COMPLETED,
+        COMMAND_HUNT_INFO_NO_ASSIGNMENT,
         ;
 
         /**

@@ -1,0 +1,38 @@
+#### Quick info:
+# 1. If you don't want a message to be sent, just set it empty - ''
+
+# 2. You can use MiniMessage formatting for custom colors and formats!
+# If you don't know how, then here is documentation:
+# https://docs.advntr.dev/minimessage/format.html
+
+# 3. PlaceholderAPI is supported
+
+# 4. Plugin placeholders are within curly brackets - {placeholder}
+# And can have additional flags:
+# ! - no formatting
+# @ - no papi
+# # - escaped double quotes (")
+# To use a flag for placeholder, append it before the name - {!placeholder}
+# You can also combine flags, so for example {@#placeholder}, will not parse PAPI placeholders,
+# and will escape double quotes (" will become \").
+# ! - is useful for player input, that is not supposed to be formatted
+# @ - for input that's supposed to be formatted, but not with papi
+# # - for things that can contain double quotes, and you want them in hover/click event
+
+
+# Prefix that will be used for {prefix} placeholder
+prefix: '<gold>[<yellow><bold>ScavengerHunt</bold><gold>]<reset>'
+
+# Main
+command-usage: '{prefix} <gray>Command usage: /{command} <reload | version>'
+command-reload-fail: '{prefix} <red>An error occurred while reloading plugin. Take a look in the console for more information!'
+command-reload-success: '{prefix} <aqua>Plugin was <green>successfully <aqua>reloaded!'
+
+hunt-assigned: '{prefix} <aqua>A new hunt has been assigned to you! Check it out with <dark_aqua><hover:show_text:"<gray>Click to see the details!"><click:run_command:"/hunt">/hunt</hover></click></dark_aqua>!'
+
+command-hunt-info-header: '{prefix} <blue>Current hunt <gray>({completed-task-count} / {task-count})</gray>:'
+command-hunt-info-task-item: '<white>- <aqua>find <dark_aqua>{item-display-name-lower-case}'
+command-hunt-info-task-item-completed: '<gray><strikethrough>- find {item-display-name-lower-case}'
+command-hunt-info-task-mob: '<white>- <aqua>kill <dark_aqua>{mob-display-name-lower-case}'
+command-hunt-info-task-mob-completed: '<gray><strikethrough>- kill <dark_aqua>{mob-display-name-lower-case}'
+command-hunt-info-no-assignment: '{prefix} <aqua>You have no hunt assigned!'

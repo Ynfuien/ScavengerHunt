@@ -3,12 +3,10 @@ package pl.ynfuien.scavengerHunt.commands.main.subcommands;
 import org.bukkit.command.CommandSender;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.scavengerHunt.commands.Subcommand;
-import pl.ynfuien.ydevlib.utils.DoubleFormatter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class GiveSubcommand implements Subcommand {
     private final ScavengerHunt instance;
