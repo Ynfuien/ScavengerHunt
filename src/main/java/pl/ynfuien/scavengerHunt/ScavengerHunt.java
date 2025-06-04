@@ -16,7 +16,6 @@ import pl.ynfuien.ydevlib.config.ConfigObject;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 

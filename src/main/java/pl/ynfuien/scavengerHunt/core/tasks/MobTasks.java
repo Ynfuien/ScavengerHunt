@@ -2,7 +2,6 @@ package pl.ynfuien.scavengerHunt.core.tasks;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Mob;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
