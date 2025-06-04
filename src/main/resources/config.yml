@@ -37,6 +37,17 @@ tasks:
     blacklist:
       - ENDER_DRAGON
       - WITHER
+      - PLAYER
+      - GIANT
+      - ARMOR_STAND
+      - ILLUSIONER
+
+  find-biome:
+    enabled: true
+
+    # List of biomes to not be chosen for a task.
+    blacklist:
+      - VOID
 
 
 hunts:

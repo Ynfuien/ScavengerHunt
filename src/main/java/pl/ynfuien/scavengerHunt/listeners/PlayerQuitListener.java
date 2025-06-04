@@ -4,29 +4,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import pl.ynfuien.scavengerHunt.Lang;
+import org.bukkit.event.player.PlayerQuitEvent;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
-import pl.ynfuien.scavengerHunt.core.hunts.Hunt;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
 
-public class PlayerJoinListener implements Listener {
+public class PlayerQuitListener implements Listener {
     private final ScavengerHunt instance;
     private final Hunts hunts;
 
-    public PlayerJoinListener(ScavengerHunt instance) {
+    public PlayerQuitListener(ScavengerHunt instance) {
         this.instance = instance;
         this.hunts = instance.getHunts();
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        Hunt hunt = hunts.getHunt(player);
-        if (hunt == null) return;
-
-        if (hunt.getStartTimestamp() != System.currentTimeMillis()) return;
-        Lang.Message.HUNT_ASSIGNED.send(player);
+        hunts.saveAndRemove(player);
     }
 }

@@ -1,10 +1,11 @@
-package pl.ynfuien.scavengerHunt.core.tasks;
+package pl.ynfuien.scavengerHunt.core.tasks.item;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.*;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
+import pl.ynfuien.scavengerHunt.core.tasks.ITaskGenerator;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
 import java.util.*;

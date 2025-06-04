@@ -88,7 +88,18 @@ public class Hunts {
     }
 
     private Hunt getSavedHunt(Player player) {
+        if (hunts.containsKey(player)) return hunts.get(player);
+
         return null;
+    }
+
+    private void saveHunt(Player player) {
+
+    }
+
+    public void saveAndRemove(Player player) {
+        saveHunt(player);
+        hunts.remove(player);
     }
 
     public boolean isAutoAssign() {
@@ -110,4 +121,5 @@ public class Hunts {
     public Rewards getRewards() {
         return rewards;
     }
+
 }

@@ -2,6 +2,10 @@ package pl.ynfuien.scavengerHunt.core.tasks;
 
 import org.bukkit.configuration.ConfigurationSection;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
+import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTask;
+import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTasks;
+import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTasks;
+import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTasks;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
 import java.util.ArrayList;
@@ -12,6 +16,7 @@ public class Tasks {
 
     private final ItemTasks itemTasks;
     private final MobTasks mobTasks;
+    private final BiomeTasks biomeTasks;
 
     private final List<ITaskGenerator> taskGenerators = new ArrayList<>();
 
@@ -19,6 +24,7 @@ public class Tasks {
         this.instance = instance;
         this.itemTasks = new ItemTasks(instance);
         this.mobTasks = new MobTasks(instance);
+        this.biomeTasks = new BiomeTasks(instance);
     }
 
     public boolean load(ConfigurationSection config) {
@@ -36,9 +42,15 @@ public class Tasks {
             return false;
         }
 
+        if (!biomeTasks.load(config.getConfigurationSection("find-biome"))) {
+            YLogger.error("Plugin couldn't load 'kill-mob' configuration!");
+            return false;
+        }
+
         taskGenerators.clear();
         if (itemTasks.isEnabled()) taskGenerators.add(itemTasks);
         if (mobTasks.isEnabled()) taskGenerators.add(mobTasks);
+        if (biomeTasks.isEnabled()) taskGenerators.add(biomeTasks);
 
         if (taskGenerators.isEmpty()) {
             YLogger.error("At least one task type has to be enabled!");

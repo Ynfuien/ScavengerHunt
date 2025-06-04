@@ -1,6 +1,7 @@
 package pl.ynfuien.scavengerHunt.commands.main;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,10 +18,9 @@ import pl.ynfuien.scavengerHunt.commands.Subcommand;
 import pl.ynfuien.scavengerHunt.commands.main.subcommands.ReloadSubcommand;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunt;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
-import pl.ynfuien.scavengerHunt.core.tasks.ItemTask;
-import pl.ynfuien.scavengerHunt.core.tasks.MobTask;
+import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTask;
+import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTask;
 import pl.ynfuien.scavengerHunt.core.tasks.Task;
-import pl.ynfuien.ydevlib.messages.colors.ColorFormatter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +73,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+
         Hunt hunt = hunts.getHunt(player);
         if (hunt == null) {
             Lang.Message.COMMAND_HUNT_INFO_NO_ASSIGNMENT.send(sender);
@@ -88,7 +89,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         for (Task task : tasks) {
             if (task instanceof ItemTask itemTask) {
                 Material item = itemTask.getItem();
-                String displayName = ColorFormatter.SERIALIZER.serialize(new ItemStack(item).effectiveName().color(null));
+                String displayName = LegacyComponentSerializer.legacyAmpersand().serialize((new ItemStack(item).effectiveName().color(null)));
+
                 placeholders.put("item-display-name", displayName);
                 placeholders.put("item-display-name-lower-case", displayName.toLowerCase());
                 placeholders.put("item-display-name-upper-case", displayName.toUpperCase());
@@ -107,7 +109,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 EntityType mob = mobTask.getMob();
 
 
-                String displayName = ColorFormatter.SERIALIZER.serialize(Component.translatable(mob.translationKey()));
+                String displayName = LegacyComponentSerializer.legacyAmpersand().serialize(Component.translatable(mob.translationKey()));
                 placeholders.put("mob-display-name", displayName);
                 placeholders.put("mob-display-name-lower-case", displayName.toLowerCase());
                 placeholders.put("mob-display-name-upper-case", displayName.toUpperCase());

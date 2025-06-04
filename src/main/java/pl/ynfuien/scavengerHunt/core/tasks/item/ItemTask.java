@@ -1,12 +1,12 @@
-package pl.ynfuien.scavengerHunt.core.tasks;
+package pl.ynfuien.scavengerHunt.core.tasks.item;
 
 import org.bukkit.Material;
+import pl.ynfuien.scavengerHunt.core.tasks.Task;
 
 public class ItemTask extends Task {
     private final Material item;
 
     public ItemTask(Material item) {
-        super(Type.ITEM);
         this.item = item;
     }
 

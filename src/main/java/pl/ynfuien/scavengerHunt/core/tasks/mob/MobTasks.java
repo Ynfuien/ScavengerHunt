@@ -1,8 +1,9 @@
-package pl.ynfuien.scavengerHunt.core.tasks;
+package pl.ynfuien.scavengerHunt.core.tasks.mob;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
+import pl.ynfuien.scavengerHunt.core.tasks.ITaskGenerator;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MobTasks implements ITaskGenerator {
+public class    MobTasks implements ITaskGenerator {
     private final ScavengerHunt instance;
 
     private boolean enabled = false;
@@ -77,7 +78,7 @@ public class MobTasks implements ITaskGenerator {
             if (!mob.isAlive()) continue;
 
             mobs.add(mob);
-            YLogger.debug(mob.name());
+            YLogger.info(mob.name());
         }
 
         return mobs;

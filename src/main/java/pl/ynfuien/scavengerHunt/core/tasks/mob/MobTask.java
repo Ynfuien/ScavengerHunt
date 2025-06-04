@@ -1,12 +1,12 @@
-package pl.ynfuien.scavengerHunt.core.tasks;
+package pl.ynfuien.scavengerHunt.core.tasks.mob;
 
 import org.bukkit.entity.EntityType;
+import pl.ynfuien.scavengerHunt.core.tasks.Task;
 
 public class MobTask extends Task {
     private final EntityType mob;
 
     public MobTask(EntityType mob) {
-        super(Type.ITEM);
         this.mob = mob;
     }
 

@@ -10,7 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import pl.ynfuien.scavengerHunt.commands.main.MainCommand;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
 import pl.ynfuien.scavengerHunt.core.tasks.Tasks;
+import pl.ynfuien.scavengerHunt.listeners.EntityDeathListener;
+import pl.ynfuien.scavengerHunt.listeners.EntityPickupItemListener;
 import pl.ynfuien.scavengerHunt.listeners.PlayerJoinListener;
+import pl.ynfuien.scavengerHunt.listeners.PlayerQuitListener;
 import pl.ynfuien.ydevlib.config.ConfigHandler;
 import pl.ynfuien.ydevlib.config.ConfigObject;
 import pl.ynfuien.ydevlib.messages.YLogger;
@@ -91,6 +94,9 @@ public final class ScavengerHunt extends JavaPlugin {
     private void registerListeners() {
         Listener[] listeners = new Listener[] {
                 new PlayerJoinListener(this),
+                new PlayerQuitListener(this),
+                new EntityPickupItemListener(this),
+                new EntityDeathListener(this),
         };
 
         for (Listener listener : listeners) {
