@@ -69,12 +69,12 @@ public class BiomeTasks implements ITaskGenerator {
 
     @Override
     public BiomeTask createTask() {
-        Biome mob;
+        Biome biome;
         do {
             int randomIndex = ScavengerHunt.randomBetween(0, biomes.size());
-            mob = biomes.get(randomIndex);
-        } while (blacklist.contains(mob));
+            biome = biomes.get(randomIndex);
+        } while (blacklist.contains(biome));
 
-        return new BiomeTask(mob);
+        return new BiomeTask(biome);
     }
 }

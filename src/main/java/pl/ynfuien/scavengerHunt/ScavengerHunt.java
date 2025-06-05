@@ -11,10 +11,7 @@ import pl.ynfuien.scavengerHunt.commands.main.MainCommand;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
 import pl.ynfuien.scavengerHunt.core.tasks.Tasks;
 import pl.ynfuien.scavengerHunt.hooks.Hooks;
-import pl.ynfuien.scavengerHunt.listeners.EntityDeathListener;
-import pl.ynfuien.scavengerHunt.listeners.PlayerInventorySlotChangeListener;
-import pl.ynfuien.scavengerHunt.listeners.PlayerJoinListener;
-import pl.ynfuien.scavengerHunt.listeners.PlayerQuitListener;
+import pl.ynfuien.scavengerHunt.listeners.*;
 import pl.ynfuien.ydevlib.config.ConfigHandler;
 import pl.ynfuien.ydevlib.config.ConfigObject;
 import pl.ynfuien.ydevlib.messages.YLogger;
@@ -86,6 +83,7 @@ public final class ScavengerHunt extends JavaPlugin {
                 new PlayerQuitListener(this),
                 new PlayerInventorySlotChangeListener(this),
                 new EntityDeathListener(this),
+                new PlayerTradeListener(this),
         };
 
         for (Listener listener : listeners) {

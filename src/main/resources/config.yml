@@ -49,6 +49,12 @@ tasks:
     blacklist:
       - THE_VOID
 
+  trade-villager:
+    enabled: true
+
+    # List of villager professions to not be chosen for a task.
+    blacklist: []
+
 
 hunts:
   # Whether to automatically assign new hunt for players

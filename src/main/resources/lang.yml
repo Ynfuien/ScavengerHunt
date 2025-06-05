@@ -39,15 +39,24 @@ hunt-ended: '{prefix} <red>You couldn''t make it in time! Your hunt has ended.'
 
 task-completed: '{prefix} <aqua>Completed a task! Only <dark_aqua>{tasks-left}</dark_aqua> left!'
 
+
 command-hunt-info-header: '{prefix} <blue>Current hunt <gray>({completed-task-count} / {task-count})</gray>:'
+
 command-hunt-info-task-item: '<white>- <aqua>get <dark_aqua>{item-display-name-lower-case}'
 command-hunt-info-task-item-completed: '<dark_gray><strikethrough>- get {item-display-name-lower-case}'
+
 command-hunt-info-task-mob: '<white>- <aqua>kill a <dark_aqua>{mob-display-name-lower-case}'
 command-hunt-info-task-mob-completed: '<dark_gray><strikethrough>- kill a {mob-display-name-lower-case}'
+
 command-hunt-info-task-biome: '<white>- <aqua>find <dark_aqua>{biome-display-name-lower-case}</dark_aqua> biome'
 command-hunt-info-task-biome-completed: '<dark_gray><strikethrough>- find {biome-display-name-lower-case} biome'
+
+command-hunt-info-task-trade: '<white>- <aqua>trade <dark_aqua>{profession-display-name-lower-case}</dark_aqua> villager'
+command-hunt-info-task-trade-completed: '<dark_gray><strikethrough>- trade {profession-display-name-lower-case} villager'
+
 command-hunt-info-footer: '<gray>Time left: {hours-left}h and {minutes-left}m'
 command-hunt-info-no-assignment: '{prefix} <aqua>You have no hunt assigned!'
+
 
 command-hunt-assign-usage: '{prefix} <gray>Command usage: /{command} assign <player>'
 command-hunt-assign-no-player: '{prefix} <red>Provided player isn''t online!'

@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,6 +26,7 @@ import pl.ynfuien.scavengerHunt.core.tasks.Task;
 import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTask;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTask;
 import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTask;
+import pl.ynfuien.scavengerHunt.core.tasks.trade.TradeTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,6 +147,23 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
 
                 Lang.Message.COMMAND_HUNT_INFO_TASK_BIOME.send(player, placeholders);
+            }
+
+            if (task instanceof TradeTask tradeTask) {
+                Villager.Profession profession = tradeTask.getGoal();
+
+                String displayName = LegacyComponentSerializer.legacyAmpersand().serialize(Component.translatable(profession.translationKey()));
+                placeholders.put("profession-display-name", displayName);
+                placeholders.put("profession-display-name-lower-case", displayName.toLowerCase());
+                placeholders.put("profession-display-name-upper-case", displayName.toUpperCase());
+                placeholders.put("profession-name", profession.key().value());
+
+                if (tradeTask.isCompleted()) {
+                    Lang.Message.COMMAND_HUNT_INFO_TASK_TRADE_COMPLETED.send(player, placeholders);
+                    continue;
+                }
+
+                Lang.Message.COMMAND_HUNT_INFO_TASK_TRADE.send(player, placeholders);
             }
         }
 

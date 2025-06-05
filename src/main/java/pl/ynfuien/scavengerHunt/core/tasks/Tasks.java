@@ -5,6 +5,7 @@ import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTasks;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTasks;
 import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTasks;
+import pl.ynfuien.scavengerHunt.core.tasks.trade.TradeTasks;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Tasks {
     private final ItemTasks itemTasks;
     private final MobTasks mobTasks;
     private final BiomeTasks biomeTasks;
+    private final TradeTasks tradeTasks;
 
     private final List<ITaskGenerator> taskGenerators = new ArrayList<>();
 
@@ -24,6 +26,7 @@ public class Tasks {
         this.itemTasks = new ItemTasks(instance);
         this.mobTasks = new MobTasks(instance);
         this.biomeTasks = new BiomeTasks(instance);
+        this.tradeTasks = new TradeTasks(instance);
     }
 
     public boolean load(ConfigurationSection config) {
@@ -42,7 +45,12 @@ public class Tasks {
         }
 
         if (!biomeTasks.load(config.getConfigurationSection("find-biome"))) {
-            YLogger.error("Plugin couldn't load 'kill-mob' configuration!");
+            YLogger.error("Plugin couldn't load 'find-biome' configuration!");
+            return false;
+        }
+
+        if (!tradeTasks.load(config.getConfigurationSection("trade-villager"))) {
+            YLogger.error("Plugin couldn't load 'trade-villager' configuration!");
             return false;
         }
 
@@ -50,6 +58,7 @@ public class Tasks {
         if (itemTasks.isEnabled()) taskGenerators.add(itemTasks);
         if (mobTasks.isEnabled()) taskGenerators.add(mobTasks);
         if (biomeTasks.isEnabled()) taskGenerators.add(biomeTasks);
+        if (tradeTasks.isEnabled()) taskGenerators.add(tradeTasks);
 
         if (taskGenerators.isEmpty()) {
             YLogger.error("At least one task type has to be enabled!");
