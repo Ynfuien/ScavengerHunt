@@ -2,15 +2,14 @@ package pl.ynfuien.scavengerHunt.commands.main;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.translation.Translatable;
+import org.bukkit.Keyed;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,6 +25,7 @@ import pl.ynfuien.scavengerHunt.core.tasks.Task;
 import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTask;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTask;
 import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTask;
+import pl.ynfuien.scavengerHunt.core.tasks.ride.RideTask;
 import pl.ynfuien.scavengerHunt.core.tasks.trade.TradeTask;
 
 import java.util.ArrayList;
@@ -112,59 +112,49 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 continue;
             }
 
-            if (task instanceof MobTask mobTask) {
-                EntityType mob = mobTask.getGoal();
+            String placeholderName;
+            Lang.Message completed;
+            Lang.Message ongoing;
 
-
-                String displayName = LegacyComponentSerializer.legacyAmpersand().serialize(Component.translatable(mob.translationKey()));
-                placeholders.put("mob-display-name", displayName);
-                placeholders.put("mob-display-name-lower-case", displayName.toLowerCase());
-                placeholders.put("mob-display-name-upper-case", displayName.toUpperCase());
-                placeholders.put("mob-name", mob.name());
-
-                if (mobTask.isCompleted()) {
-                    Lang.Message.COMMAND_HUNT_INFO_TASK_MOB_COMPLETED.send(player, placeholders);
-                    continue;
+            switch (task) {
+                case MobTask ignored -> {
+                    placeholderName = "mob";
+                    completed = Lang.Message.COMMAND_HUNT_INFO_TASK_MOB_COMPLETED;
+                    ongoing = Lang.Message.COMMAND_HUNT_INFO_TASK_MOB;
                 }
+                case BiomeTask ignored -> {
+                    placeholderName = "biome";
+                    completed = Lang.Message.COMMAND_HUNT_INFO_TASK_BIOME_COMPLETED;
+                    ongoing = Lang.Message.COMMAND_HUNT_INFO_TASK_BIOME;
+                }
+                case TradeTask ignored -> {
+                    placeholderName = "profession";
+                    completed = Lang.Message.COMMAND_HUNT_INFO_TASK_TRADE_COMPLETED;
+                    ongoing = Lang.Message.COMMAND_HUNT_INFO_TASK_TRADE;
+                }
+                case RideTask ignored -> {
+                    placeholderName = "vehicle";
+                    completed = Lang.Message.COMMAND_HUNT_INFO_TASK_RIDE_COMPLETED;
+                    ongoing = Lang.Message.COMMAND_HUNT_INFO_TASK_RIDE;
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + task);
+            }
 
-                Lang.Message.COMMAND_HUNT_INFO_TASK_MOB.send(player, placeholders);
+
+            Keyed goal = (Keyed) task.getGoal();
+
+            String displayName = LegacyComponentSerializer.legacyAmpersand().serialize(Component.translatable(((Translatable) goal).translationKey()));
+            placeholders.put(placeholderName+"-display-name", displayName);
+            placeholders.put(placeholderName+"-display-name-lower-case", displayName.toLowerCase());
+            placeholders.put(placeholderName+"-display-name-upper-case", displayName.toUpperCase());
+            placeholders.put(placeholderName+"-name", goal.key().value());
+
+            if (task.isCompleted()) {
+                completed.send(player, placeholders);
                 continue;
             }
 
-            if (task instanceof BiomeTask biomeTask) {
-                Biome biome = biomeTask.getGoal();
-
-
-                String displayName = LegacyComponentSerializer.legacyAmpersand().serialize(Component.translatable(biome.translationKey()));
-                placeholders.put("biome-display-name", displayName);
-                placeholders.put("biome-display-name-lower-case", displayName.toLowerCase());
-                placeholders.put("biome-display-name-upper-case", displayName.toUpperCase());
-                placeholders.put("biome-name", biome.key().value());
-
-                if (biomeTask.isCompleted()) {
-                    Lang.Message.COMMAND_HUNT_INFO_TASK_BIOME_COMPLETED.send(player, placeholders);
-                    continue;
-                }
-
-                Lang.Message.COMMAND_HUNT_INFO_TASK_BIOME.send(player, placeholders);
-            }
-
-            if (task instanceof TradeTask tradeTask) {
-                Villager.Profession profession = tradeTask.getGoal();
-
-                String displayName = LegacyComponentSerializer.legacyAmpersand().serialize(Component.translatable(profession.translationKey()));
-                placeholders.put("profession-display-name", displayName);
-                placeholders.put("profession-display-name-lower-case", displayName.toLowerCase());
-                placeholders.put("profession-display-name-upper-case", displayName.toUpperCase());
-                placeholders.put("profession-name", profession.key().value());
-
-                if (tradeTask.isCompleted()) {
-                    Lang.Message.COMMAND_HUNT_INFO_TASK_TRADE_COMPLETED.send(player, placeholders);
-                    continue;
-                }
-
-                Lang.Message.COMMAND_HUNT_INFO_TASK_TRADE.send(player, placeholders);
-            }
+            ongoing.send(player, placeholders);
         }
 
         int minutesLeft = hunt.getTimeLeft();

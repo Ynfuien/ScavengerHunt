@@ -9,6 +9,7 @@ import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTask;
 import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTasks;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTask;
 import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTask;
+import pl.ynfuien.scavengerHunt.core.tasks.ride.RideTask;
 import pl.ynfuien.scavengerHunt.core.tasks.trade.TradeTask;
 import pl.ynfuien.scavengerHunt.core.tasks.trade.TradeTasks;
 
@@ -38,6 +39,7 @@ public class TaskDTO {
             case "MobTask" -> task = new MobTask(EntityType.valueOf(goal));
             case "ItemTask" -> task = new ItemTask(Material.matchMaterial(goal));
             case "TradeTask" -> task = new TradeTask(TradeTasks.professionRegistry.get(NamespacedKey.minecraft(goal)));
+            case "RideTask" -> task = new RideTask(EntityType.valueOf(goal));
         }
 
         if (task == null) return null;

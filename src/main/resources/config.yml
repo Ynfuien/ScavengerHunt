@@ -55,6 +55,22 @@ tasks:
     # List of villager professions to not be chosen for a task.
     blacklist: []
 
+  ride-vehicle:
+    enabled: true
+
+    # List of vehicles to be chosen for a task.
+    list:
+      - HORSE
+      - CAMEL
+      - DONKEY
+      - LLAMA
+      - MINECART
+      - MULE
+      - PIG
+      - SKELETON_HORSE
+      - STRIDER
+      - TRADER_LLAMA
+
 
 hunts:
   # Whether to automatically assign new hunt for players

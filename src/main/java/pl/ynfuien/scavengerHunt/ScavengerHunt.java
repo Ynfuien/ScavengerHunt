@@ -84,6 +84,7 @@ public final class ScavengerHunt extends JavaPlugin {
                 new PlayerInventorySlotChangeListener(this),
                 new EntityDeathListener(this),
                 new PlayerTradeListener(this),
+                new VehicleEnterListener(this),
         };
 
         for (Listener listener : listeners) {

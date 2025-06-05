@@ -54,6 +54,9 @@ command-hunt-info-task-biome-completed: '<dark_gray><strikethrough>- find {biome
 command-hunt-info-task-trade: '<white>- <aqua>trade <dark_aqua>{profession-display-name-lower-case}</dark_aqua> villager'
 command-hunt-info-task-trade-completed: '<dark_gray><strikethrough>- trade {profession-display-name-lower-case} villager'
 
+command-hunt-info-task-ride: '<white>- <aqua>ride a <dark_aqua>{vehicle-display-name-lower-case}</dark_aqua>'
+command-hunt-info-task-ride-completed: '<dark_gray><strikethrough>- ride a {vehicle-display-name-lower-case}'
+
 command-hunt-info-footer: '<gray>Time left: {hours-left}h and {minutes-left}m'
 command-hunt-info-no-assignment: '{prefix} <aqua>You have no hunt assigned!'
 

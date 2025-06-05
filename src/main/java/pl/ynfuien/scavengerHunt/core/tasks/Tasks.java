@@ -5,6 +5,7 @@ import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTasks;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTasks;
 import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTasks;
+import pl.ynfuien.scavengerHunt.core.tasks.ride.RideTasks;
 import pl.ynfuien.scavengerHunt.core.tasks.trade.TradeTasks;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
@@ -18,6 +19,7 @@ public class Tasks {
     private final MobTasks mobTasks;
     private final BiomeTasks biomeTasks;
     private final TradeTasks tradeTasks;
+    private final RideTasks rideTasks;
 
     private final List<ITaskGenerator> taskGenerators = new ArrayList<>();
 
@@ -27,6 +29,7 @@ public class Tasks {
         this.mobTasks = new MobTasks(instance);
         this.biomeTasks = new BiomeTasks(instance);
         this.tradeTasks = new TradeTasks(instance);
+        this.rideTasks = new RideTasks(instance);
     }
 
     public boolean load(ConfigurationSection config) {
@@ -54,11 +57,17 @@ public class Tasks {
             return false;
         }
 
+        if (!rideTasks.load(config.getConfigurationSection("ride-vehicle"))) {
+            YLogger.error("Plugin couldn't load 'ride-vehicle' configuration!");
+            return false;
+        }
+
         taskGenerators.clear();
         if (itemTasks.isEnabled()) taskGenerators.add(itemTasks);
         if (mobTasks.isEnabled()) taskGenerators.add(mobTasks);
         if (biomeTasks.isEnabled()) taskGenerators.add(biomeTasks);
         if (tradeTasks.isEnabled()) taskGenerators.add(tradeTasks);
+        if (rideTasks.isEnabled()) taskGenerators.add(rideTasks);
 
         if (taskGenerators.isEmpty()) {
             YLogger.error("At least one task type has to be enabled!");
