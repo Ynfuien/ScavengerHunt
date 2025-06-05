@@ -132,6 +132,7 @@ public class Hunt {
         Rewards.Reward reward = hunts.getRewards().rewardPlayer(player);
 
         Lang.Message.HUNT_COMPLETED_HEADER.send(player);
+
         if (reward.experience() > 0) {
             placeholders.put("experience-level", reward.experience());
             Lang.Message.HUNT_COMPLETED_REWARD_EXPERIENCE.send(player, placeholders);
@@ -145,6 +146,11 @@ public class Hunt {
             placeholders.put("item-display-name-lower-case", displayName.toLowerCase());
             placeholders.put("item-display-name-upper-case", displayName.toUpperCase());
             Lang.Message.HUNT_COMPLETED_REWARD_ITEM.send(player, placeholders);
+        }
+
+        if (reward.money() > 0) {
+            placeholders.put("money-amount", reward.money());
+            Lang.Message.HUNT_COMPLETED_REWARD_MONEY.send(player, placeholders);
         }
 
         finishTheHunt(true);

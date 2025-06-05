@@ -31,6 +31,7 @@ command-reload-success: '{prefix} <aqua>Plugin was <green>successfully <aqua>rel
 hunt-assigned: '{prefix} <aqua>A new hunt has been assigned to you! Check it out with <dark_aqua><hover:show_text:"<gray>Click to see the details!"><click:run_command:"/hunt">/hunt</click></hover></dark_aqua>!'
 
 hunt-completed-header: '{prefix} <green>Successfully <aqua>completed your hunt! Here is your reward:'
+hunt-completed-reward-money: '<white>- <dark_aqua>${money-amount}'
 hunt-completed-reward-experience: '<white>- <dark_aqua>x{experience-level} <aqua>experience levels'
 hunt-completed-reward-item: '<white>- <dark_aqua>x{item-amount} <aqua>{item-display-name-lower-case} <aqua>'
 

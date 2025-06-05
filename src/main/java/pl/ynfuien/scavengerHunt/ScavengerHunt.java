@@ -10,15 +10,15 @@ import org.jetbrains.annotations.NotNull;
 import pl.ynfuien.scavengerHunt.commands.main.MainCommand;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
 import pl.ynfuien.scavengerHunt.core.tasks.Tasks;
+import pl.ynfuien.scavengerHunt.hooks.Hooks;
 import pl.ynfuien.scavengerHunt.listeners.EntityDeathListener;
-import pl.ynfuien.scavengerHunt.listeners.EntityPickupItemListener;
+import pl.ynfuien.scavengerHunt.listeners.PlayerInventorySlotChangeListener;
 import pl.ynfuien.scavengerHunt.listeners.PlayerJoinListener;
 import pl.ynfuien.scavengerHunt.listeners.PlayerQuitListener;
 import pl.ynfuien.ydevlib.config.ConfigHandler;
 import pl.ynfuien.ydevlib.config.ConfigObject;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,18 +37,6 @@ public final class ScavengerHunt extends JavaPlugin {
 
         // Set logger prefix
         YLogger.setup("<gold>[<yellow>ScavengerHunt<gold>] <white>", getComponentLogger());
-        YLogger.setDebugging(true);
-
-        // TMP lang deleting
-        File folder = getDataFolder();
-        if (folder.exists() && folder.isDirectory()) {
-            File langFile = new File(folder, "lang.yml");
-            if (langFile.exists()) {
-                try {
-                    langFile.delete();
-                } catch (SecurityException ignore) {}
-            }
-        }
 
         // Configuration
         loadConfigs();
@@ -69,6 +57,8 @@ public final class ScavengerHunt extends JavaPlugin {
 
         setupCommands();
         registerListeners();
+
+        Hooks.load(this);
 
         YLogger.info("Plugin successfully <green>enabled<white>!");
     }
@@ -94,7 +84,7 @@ public final class ScavengerHunt extends JavaPlugin {
         Listener[] listeners = new Listener[] {
                 new PlayerJoinListener(this),
                 new PlayerQuitListener(this),
-                new EntityPickupItemListener(this),
+                new PlayerInventorySlotChangeListener(this),
                 new EntityDeathListener(this),
         };
 
@@ -114,39 +104,14 @@ public final class ScavengerHunt extends JavaPlugin {
     }
 
     public boolean reloadPlugin() {
-        boolean fullSuccess = true;
+        boolean fullSuccess = configHandler.reloadAll();
 
-        // Stop intervals
-//        doubledrop.stopInterval();
-//        placedGenerators.stopUpdateInterval();
-//
-//        // Save data
-//        placedGenerators.save();
-
-        // Reload configs
-        if (!configHandler.reloadAll()) fullSuccess = false;
         loadLang();
 
         FileConfiguration config = this.config.getConfig();
-        tasks.load(config.getConfigurationSection("tasks"));
-        hunts.load(config.getConfigurationSection("hunts"));
+        if (!tasks.load(config.getConfigurationSection("tasks"))) fullSuccess = false;
+        if (!hunts.load(config.getConfigurationSection("hunts"))) fullSuccess = false;
 
-        // Database reload if needed
-//        ConfigurationSection oldConfig = database.getConfig();
-//        ConfigurationSection newConfig = config.getConfig().getConfigurationSection("database");
-//        HashMap<String, Object> changes = YamlComparer.getChangedFields(oldConfig, newConfig);
-//        if (!changes.isEmpty()) {
-//            if (changes.size() == 1 && changes.containsKey("update-interval")) {
-//                database.setConfig(newConfig);
-//            } else {
-//                loadDatabase();
-//            }
-//        }
-
-//        loadGenerators();
-//
-//        doubledrop.load(database);
-//        placedGenerators.load(database);
         return fullSuccess;
     }
 

@@ -4,18 +4,11 @@ import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import pl.ynfuien.scavengerHunt.ScavengerHunt;
-import pl.ynfuien.scavengerHunt.core.hunts.Hunt;
 import pl.ynfuien.scavengerHunt.core.tasks.Task;
 import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTask;
 import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTasks;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTask;
 import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTask;
-import pl.ynfuien.ydevlib.messages.YLogger;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TaskDTO {
     private final String type;

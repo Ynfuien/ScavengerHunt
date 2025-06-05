@@ -3,6 +3,7 @@ version: '${project.version}'
 main: pl.ynfuien.scavengerHunt.ScavengerHunt
 api-version: '1.21'
 authors: [ Ynfuien ]
+softdepend: [ PlaceholderAPI, Vault, Essentials ]
 description: '${project.description}'
 
 commands:

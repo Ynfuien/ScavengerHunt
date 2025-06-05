@@ -1,7 +1,5 @@
 package pl.ynfuien.scavengerHunt.core.tasks;
 
-import pl.ynfuien.scavengerHunt.core.dto.TaskDTO;
-
 public abstract class Task<T> {
     protected T goal;
     protected boolean completed;

@@ -17,6 +17,7 @@ public class Lang extends LangBase {
         COMMAND_RELOAD_SUCCESS,
         HUNT_ASSIGNED,
         HUNT_COMPLETED_HEADER,
+        HUNT_COMPLETED_REWARD_MONEY,
         HUNT_COMPLETED_REWARD_EXPERIENCE,
         HUNT_COMPLETED_REWARD_ITEM,
         HUNT_ENDED,
@@ -38,16 +39,6 @@ public class Lang extends LangBase {
         COMMAND_HUNT_ABORT_NO_HUNT,
         COMMAND_HUNT_ABORT_SUCCESS,
         ;
-
-        /**
-         * command-hunt-assign-usage: '{prefix} <gray>Command usage: /{command} assign <player>'
-         * command-hunt-assign-no-player: '{prefix} <red>Provided player isn''t online!'
-         * command-hunt-assign-success: '{prefix} <aqua>Successfully assigned a new hunt to <dark_aqua>{player-name}</dark_aqua>!'
-         *
-         * command-hunt-abort-usage: '{prefix} <gray>Command usage: /{command} abort <player>'
-         * command-hunt-abort-no-player: '{prefix} <red>Provided player isn''t online!'
-         * command-hunt-abort-success: '{prefix} <dark_aqua>{player-name}''s <aqua>hunt has been <red>aborted</red>!'
-         */
 
         /**
          * Gets name/path of this message.

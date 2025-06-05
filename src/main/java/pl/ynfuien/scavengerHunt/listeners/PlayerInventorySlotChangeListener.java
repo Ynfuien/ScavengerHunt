@@ -12,41 +12,20 @@ import pl.ynfuien.scavengerHunt.core.hunts.Hunt;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTask;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTasks;
-import pl.ynfuien.ydevlib.messages.YLogger;
 
-public class EntityPickupItemListener implements Listener {
+public class PlayerInventorySlotChangeListener implements Listener {
     private final ScavengerHunt instance;
     private final Hunts hunts;
     private final ItemTasks itemTasks;
 
-    public EntityPickupItemListener(ScavengerHunt instance) {
+    public PlayerInventorySlotChangeListener(ScavengerHunt instance) {
         this.instance = instance;
         this.hunts = instance.getHunts();
         this.itemTasks = instance.getTasks().getItemTasks();
     }
 
-//    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-//    public void onPlayerPickupItem(EntityPickupItemEvent event) {
-//        if (!(event.getEntity() instanceof Player player)) return;
-//
-//        Hunt hunt = hunts.getCurrentHunt(player);
-//        if (hunt == null) return;
-//
-//        Item item = event.getItem();
-//        ItemStack itemStack = event.getItem().getItemStack();
-//        boolean result = hunt.handleTask(ItemTask.class, itemStack.getType());
-//
-//        if (!itemTasks.isConsume()) return;
-//        if (!result) return;
-//
-//        if (itemStack.getAmount() == 1) {
-//            item.setItemStack(ItemStack.empty());
-//            return;
-//        }
-//    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerPickupItem(PlayerInventorySlotChangeEvent event) {
+    public void onPlayerInventorySlotChange(PlayerInventorySlotChangeEvent event) {
         Player player = event.getPlayer();
 
         Hunt hunt = hunts.getCurrentHunt(player);
@@ -58,7 +37,6 @@ public class EntityPickupItemListener implements Listener {
         if (!itemTasks.isConsume()) return;
         if (!result) return;
 
-        YLogger.debug("Consume!");
         PlayerInventory inv = player.getInventory();
         inv.removeItemAnySlot(itemStack.asOne());
     }

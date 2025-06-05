@@ -47,7 +47,7 @@ tasks:
 
     # List of biomes to not be chosen for a task.
     blacklist:
-      - VOID
+      - THE_VOID
 
 
 hunts:
@@ -95,8 +95,8 @@ hunts:
           min: 1
           max: 64
 
-#    # Requires Vault and an economy plugin on the server.
-#    money:
-#      enabled: true
-#      min: 0
-#      max: 1000
+    # Requires Vault and an economy plugin on the server.
+    money:
+      enabled: true
+      min: 1
+      max: 1000

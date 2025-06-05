@@ -1,11 +1,14 @@
 package pl.ynfuien.scavengerHunt.core.hunts;
 
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
+import pl.ynfuien.scavengerHunt.hooks.vault.VaultHook;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
 import java.util.HashMap;
@@ -133,8 +136,17 @@ public class Rewards {
             }
         }
 
-        return new Reward(experienceValue, itemStack);
+        int money = 0;
+        if (moneyEnabled && VaultHook.isEconomy()) {
+            Economy economy = VaultHook.getEconomy();
+
+            int value = ScavengerHunt.randomBetween(minMoneyAmount, maxMoneyAmount + 1);
+            EconomyResponse response = economy.depositPlayer(player, value);
+            money = response.transactionSuccess() ? value : 0;
+        }
+
+        return new Reward(experienceValue, itemStack, money);
     }
 
-    public record Reward(int experience, ItemStack item) {};
+    public record Reward(int experience, ItemStack item, int money) {};
 }

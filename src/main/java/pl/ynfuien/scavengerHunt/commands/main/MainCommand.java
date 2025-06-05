@@ -145,7 +145,6 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
 
                 Lang.Message.COMMAND_HUNT_INFO_TASK_BIOME.send(player, placeholders);
-                continue;
             }
         }
 
