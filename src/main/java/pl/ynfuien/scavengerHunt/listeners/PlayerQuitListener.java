@@ -21,6 +21,7 @@ public class PlayerQuitListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        hunts.saveAndRemove(player);
+        hunts.saveHunt(player);
+        hunts.deleteHunt(player);
     }
 }

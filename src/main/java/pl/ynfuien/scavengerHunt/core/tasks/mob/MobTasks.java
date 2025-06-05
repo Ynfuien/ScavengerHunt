@@ -27,10 +27,9 @@ public class    MobTasks implements ITaskGenerator {
         if (config == null) return false;
 
         enabled = config.getBoolean("enabled");
-        if (enabled) return true;
+        if (!enabled) return true;
 
         YLogger.info("Loading kill-mob...");
-        mobs.clear();
         blacklist.clear();
 
         List<String> list = config.getStringList("blacklist");
@@ -76,9 +75,7 @@ public class    MobTasks implements ITaskGenerator {
 
         for (EntityType mob : EntityType.values()) {
             if (!mob.isAlive()) continue;
-
             mobs.add(mob);
-            YLogger.info(mob.name());
         }
 
         return mobs;

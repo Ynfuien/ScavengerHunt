@@ -16,6 +16,7 @@ public class ItemTasks implements ITaskGenerator {
     private boolean enabled = false;
     private final List<Material> items;
     private final Set<Material> blacklist = new HashSet<>();
+    private boolean consume = false;
 
     public ItemTasks(ScavengerHunt instance) {
         this.instance = instance;
@@ -26,10 +27,9 @@ public class ItemTasks implements ITaskGenerator {
         if (config == null) return false;
 
         enabled = config.getBoolean("enabled");
-        if (enabled) return true;
+        if (!enabled) return true;
 
-        YLogger.info("Loading find-item...");
-        items.clear();
+        YLogger.info("Loading get-item...");
         blacklist.clear();
 
         List<String> list = config.getStringList("blacklist");
@@ -43,7 +43,9 @@ public class ItemTasks implements ITaskGenerator {
             blacklist.add(item);
         }
 
-        YLogger.info("Loaded find-item!");
+        consume = config.getBoolean("consume");
+
+        YLogger.info("Loaded get-item!");
         return true;
     }
 
@@ -57,6 +59,10 @@ public class ItemTasks implements ITaskGenerator {
 
     public Set<Material> getBlacklist() {
         return blacklist;
+    }
+
+    public boolean isConsume() {
+        return consume;
     }
 
     @Override

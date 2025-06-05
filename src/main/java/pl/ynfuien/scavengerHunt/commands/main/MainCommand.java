@@ -3,6 +3,7 @@ package pl.ynfuien.scavengerHunt.commands.main;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,9 +19,10 @@ import pl.ynfuien.scavengerHunt.commands.Subcommand;
 import pl.ynfuien.scavengerHunt.commands.main.subcommands.ReloadSubcommand;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunt;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
+import pl.ynfuien.scavengerHunt.core.tasks.Task;
+import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTask;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTask;
 import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTask;
-import pl.ynfuien.scavengerHunt.core.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,21 +76,21 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         }
 
 
-        Hunt hunt = hunts.getHunt(player);
+        Hunt hunt = hunts.getCurrentHunt(player);
         if (hunt == null) {
             Lang.Message.COMMAND_HUNT_INFO_NO_ASSIGNMENT.send(sender);
             return;
         }
 
-        List<Task> tasks = hunt.getTasks();
+        List<Task<?>> tasks = hunt.getTasks();
 
         placeholders.put("completed-task-count", hunt.getCompletedTaskCount());
         placeholders.put("task-count", tasks.size());
         Lang.Message.COMMAND_HUNT_INFO_HEADER.send(sender, placeholders);
 
-        for (Task task : tasks) {
+        for (Task<?> task : tasks) {
             if (task instanceof ItemTask itemTask) {
-                Material item = itemTask.getItem();
+                Material item = itemTask.getGoal();
                 String displayName = LegacyComponentSerializer.legacyAmpersand().serialize((new ItemStack(item).effectiveName().color(null)));
 
                 placeholders.put("item-display-name", displayName);
@@ -106,7 +108,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             }
 
             if (task instanceof MobTask mobTask) {
-                EntityType mob = mobTask.getMob();
+                EntityType mob = mobTask.getGoal();
 
 
                 String displayName = LegacyComponentSerializer.legacyAmpersand().serialize(Component.translatable(mob.translationKey()));
@@ -123,7 +125,31 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 Lang.Message.COMMAND_HUNT_INFO_TASK_MOB.send(player, placeholders);
                 continue;
             }
+
+            if (task instanceof BiomeTask biomeTask) {
+                Biome biome = biomeTask.getGoal();
+
+
+                String displayName = LegacyComponentSerializer.legacyAmpersand().serialize(Component.translatable(biome.translationKey()));
+                placeholders.put("biome-display-name", displayName);
+                placeholders.put("biome-display-name-lower-case", displayName.toLowerCase());
+                placeholders.put("biome-display-name-upper-case", displayName.toUpperCase());
+                placeholders.put("biome-name", biome.key().value());
+
+                if (biomeTask.isCompleted()) {
+                    Lang.Message.COMMAND_HUNT_INFO_TASK_BIOME_COMPLETED.send(player, placeholders);
+                    continue;
+                }
+
+                Lang.Message.COMMAND_HUNT_INFO_TASK_BIOME.send(player, placeholders);
+                continue;
+            }
         }
+
+        int minutesLeft = hunt.getTimeLeft();
+        placeholders.put("hours-left", minutesLeft / 60);
+        placeholders.put("minutes-left", minutesLeft % 60);
+        Lang.Message.COMMAND_HUNT_INFO_FOOTER.send(sender, placeholders);
     }
 
     @Override

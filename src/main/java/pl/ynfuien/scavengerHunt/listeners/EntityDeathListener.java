@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunt;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
+import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTask;
 
 public class EntityDeathListener implements Listener {
     private final ScavengerHunt instance;
@@ -26,10 +27,10 @@ public class EntityDeathListener implements Listener {
         if (damager == null) return;
         if (!(damager instanceof Player player)) return;
 
-        Hunt hunt = hunts.getHunt(player);
+        Hunt hunt = hunts.getCurrentHunt(player);
         if (hunt == null) return;
 
         EntityType mob = event.getEntity().getType();
-        hunt.mobKilled(mob);
+        hunt.handleTask(MobTask.class, mob);
     }
 }

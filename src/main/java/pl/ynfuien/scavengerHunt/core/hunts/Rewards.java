@@ -105,12 +105,14 @@ public class Rewards {
         return true;
     }
 
-    public void rewardPlayer(Player player) {
+    public Reward rewardPlayer(Player player) {
+        int experienceValue = 0;
         if (experienceEnabled) {
-            int value = ScavengerHunt.randomBetween(minExperienceAmount, maxExperienceAmount + 1);
-            player.giveExpLevels(value);
+            experienceValue = ScavengerHunt.randomBetween(minExperienceAmount, maxExperienceAmount + 1);
+            player.giveExpLevels(experienceValue);
         }
 
+        ItemStack itemStack = null;
         if (itemsEnabled) {
             int random = ScavengerHunt.randomBetween(0, itemList.size());
 
@@ -120,7 +122,11 @@ public class Rewards {
                     Pair<Integer, Integer> minMaxPair = itemList.get(item);
 
                     int value = ScavengerHunt.randomBetween(minMaxPair.getKey(), minMaxPair.getValue() + 1);
-                    player.give(new ItemStack(item, value));
+                    if (value > 0) {
+                        itemStack = new ItemStack(item, value);
+                        player.give(itemStack);
+                    }
+
                     break;
                 }
 
@@ -128,8 +134,8 @@ public class Rewards {
             }
         }
 
-//        if (moneyEnabled) {
-//
-//        }
+        return new Reward(experienceValue, itemStack);
     }
+
+    public record Reward(int experience, ItemStack item) {};
 }

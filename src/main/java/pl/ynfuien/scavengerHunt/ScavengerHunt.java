@@ -81,7 +81,6 @@ public final class ScavengerHunt extends JavaPlugin {
     private void setupCommands() {
         HashMap<String, CommandExecutor> commands = new HashMap<>();
         commands.put("scavengerhunt", new MainCommand(this));
-//        commands.put("doubledrop", new DoubledropCommand(this));
 
         for (String name : commands.keySet()) {
             CommandExecutor cmd = commands.get(name);
@@ -127,6 +126,10 @@ public final class ScavengerHunt extends JavaPlugin {
         // Reload configs
         if (!configHandler.reloadAll()) fullSuccess = false;
         loadLang();
+
+        FileConfiguration config = this.config.getConfig();
+        tasks.load(config.getConfigurationSection("tasks"));
+        hunts.load(config.getConfigurationSection("hunts"));
 
         // Database reload if needed
 //        ConfigurationSection oldConfig = database.getConfig();

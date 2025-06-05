@@ -5,9 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import pl.ynfuien.scavengerHunt.Lang;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
-import pl.ynfuien.scavengerHunt.core.hunts.Hunt;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
 
 public class PlayerJoinListener implements Listener {
@@ -23,10 +21,6 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        Hunt hunt = hunts.getHunt(player);
-        if (hunt == null) return;
-
-        if (hunt.getStartTimestamp() != System.currentTimeMillis()) return;
-        Lang.Message.HUNT_ASSIGNED.send(player);
+        hunts.autoAssignNewHunt(player);
     }
 }

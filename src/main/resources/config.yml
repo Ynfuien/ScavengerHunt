@@ -1,5 +1,5 @@
 tasks:
-  find-item:
+  get-item:
     enabled: true
 
     # List of items that will not be considered when choosing

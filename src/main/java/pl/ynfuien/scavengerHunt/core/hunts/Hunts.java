@@ -2,6 +2,7 @@ package pl.ynfuien.scavengerHunt.core.hunts;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import pl.ynfuien.scavengerHunt.Lang;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
@@ -63,28 +64,26 @@ public class Hunts {
         return true;
     }
 
-    private Hunt createHunt(Player player) {
+    public Hunt createNewHunt(Player player) {
         int tasks = ScavengerHunt.randomBetween(minTaskAmount, maxTaskAmount + 1);
 
-        return new Hunt(instance, player, tasks);
-    }
-
-    public Hunt getHunt(Player player) {
-        return getHunt(player, false);
-    }
-
-    public Hunt getHunt(Player player, boolean force) {
-        Hunt hunt = getSavedHunt(player);
-        if (hunt != null) {
-            hunts.put(player, hunt);
-            return hunt;
-        }
-
-        if (!force && !autoAssign) return null;
-        hunt = createHunt(player);
+        Hunt hunt = new Hunt(instance, player, tasks);
         hunts.put(player, hunt);
 
+        Lang.Message.HUNT_ASSIGNED.send(player);
         return hunt;
+    }
+
+    public Hunt getCurrentHunt(Player player) {
+        Hunt hunt = getSavedHunt(player);
+        if (hunt != null) hunts.put(player, hunt);
+
+        return hunt;
+    }
+
+    public void autoAssignNewHunt(Player player) {
+        if (!autoAssign) return;
+        createNewHunt(player);
     }
 
     private Hunt getSavedHunt(Player player) {
@@ -93,12 +92,11 @@ public class Hunts {
         return null;
     }
 
-    private void saveHunt(Player player) {
-
+    public void saveHunt(Player player) {
+        player.
     }
 
-    public void saveAndRemove(Player player) {
-        saveHunt(player);
+    public void deleteHunt(Player player) {
         hunts.remove(player);
     }
 

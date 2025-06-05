@@ -2,7 +2,6 @@ package pl.ynfuien.scavengerHunt.core.tasks;
 
 import org.bukkit.configuration.ConfigurationSection;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
-import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTask;
 import pl.ynfuien.scavengerHunt.core.tasks.biome.BiomeTasks;
 import pl.ynfuien.scavengerHunt.core.tasks.item.ItemTasks;
 import pl.ynfuien.scavengerHunt.core.tasks.mob.MobTasks;
@@ -32,8 +31,8 @@ public class Tasks {
 
         YLogger.info("Loading tasks...");
 
-        if (!itemTasks.load(config.getConfigurationSection("find-item"))) {
-            YLogger.error("Plugin couldn't load 'find-item' configuration!");
+        if (!itemTasks.load(config.getConfigurationSection("get-item"))) {
+            YLogger.error("Plugin couldn't load 'get-item' configuration!");
             return false;
         }
 
@@ -62,10 +61,22 @@ public class Tasks {
     }
 
 
-    public Task createTask() {
+    public Task<?> createTask() {
         int random = ScavengerHunt.randomBetween(0, taskGenerators.size());
         ITaskGenerator taskGenerator = taskGenerators.get(random);
 
         return taskGenerator.createTask();
+    }
+
+    public ItemTasks getItemTasks() {
+        return itemTasks;
+    }
+
+    public MobTasks getMobTasks() {
+        return mobTasks;
+    }
+
+    public BiomeTasks getBiomeTasks() {
+        return biomeTasks;
     }
 }

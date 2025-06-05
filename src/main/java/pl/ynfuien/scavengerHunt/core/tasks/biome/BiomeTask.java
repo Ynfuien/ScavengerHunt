@@ -1,24 +1,17 @@
 package pl.ynfuien.scavengerHunt.core.tasks.biome;
 
 import org.bukkit.block.Biome;
-import org.bukkit.entity.EntityType;
 import pl.ynfuien.scavengerHunt.core.tasks.Task;
 
-public class BiomeTask extends Task {
-    private final Biome biome;
-
+public class BiomeTask extends Task<Biome> {
     public BiomeTask(Biome biome) {
-        this.biome = biome;
-    }
-
-    public Biome getBiome() {
-        return biome;
+        super(biome);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
-        if (obj instanceof BiomeTask task) return task.getBiome().equals(this.biome);
+        if (obj instanceof BiomeTask task) return task.getGoal().equals(this.goal);
 
         return super.equals(obj);
     }

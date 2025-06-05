@@ -2,7 +2,6 @@ package pl.ynfuien.scavengerHunt.core.tasks.biome;
 
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.block.Biome;
@@ -12,7 +11,10 @@ import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.scavengerHunt.core.tasks.ITaskGenerator;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class BiomeTasks implements ITaskGenerator {
     private final ScavengerHunt instance;
@@ -33,10 +35,9 @@ public class BiomeTasks implements ITaskGenerator {
         if (config == null) return false;
 
         enabled = config.getBoolean("enabled");
-        if (enabled) return true;
+        if (!enabled) return true;
 
         YLogger.info("Loading find-biome...");
-        biomes.clear();
         blacklist.clear();
 
         List<String> list = config.getStringList("blacklist");
