@@ -27,6 +27,24 @@ public class Hunt {
     private ScheduledTask huntCheckInterval = null;
     private Biome lastBiome = null;
 
+    public Hunt(ScavengerHunt instance, Player player, long startTimestamp, List<Task<?>> tasks) {
+        this.instance = instance;
+        this.hunts = instance.getHunts();
+        this.player = player;
+        this.startTimestamp = startTimestamp;
+        this.tasks.addAll(tasks);
+
+        for (Task<?> task : tasks) {
+            if (task.isCompleted()) continue;
+            if (!(task instanceof BiomeTask)) continue;
+
+            startInterval(true);
+            return;
+        }
+
+        startInterval(false);
+    }
+
     public Hunt(ScavengerHunt instance, Player player, int taskAmount) {
         this.instance = instance;
         this.hunts = instance.getHunts();
@@ -46,7 +64,10 @@ public class Hunt {
             this.tasks.add(task);
         }
 
-        boolean checkBiome = isAnyBiomeTask;
+        startInterval(isAnyBiomeTask);
+    }
+
+    private void startInterval(boolean checkBiome) {
         huntCheckInterval = Bukkit.getGlobalRegionScheduler().runAtFixedRate(instance, (task) -> {
             if (getTimeLeft() <= 0) {
                 Lang.Message.HUNT_ENDED.send(player);
@@ -68,6 +89,7 @@ public class Hunt {
     private void finishTheHunt() {
         hunts.deleteHunt(player);
         huntCheckInterval.cancel();
+        hunts.saveHunt(player);
 
         Bukkit.getGlobalRegionScheduler().runDelayed(instance, (task) -> {
             hunts.autoAssignNewHunt(player);
@@ -143,6 +165,8 @@ public class Hunt {
             HashMap<String, Object> placeholders = new HashMap<>();
             placeholders.put("tasks-left", tasks.size() - getCompletedTaskCount());
             Lang.Message.TASK_COMPLETED.send(player, placeholders);
+
+            hunts.saveHunt(player);
             return true;
         }
 

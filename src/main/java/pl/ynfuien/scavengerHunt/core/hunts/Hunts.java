@@ -1,15 +1,24 @@
 package pl.ynfuien.scavengerHunt.core.hunts;
 
+import com.google.gson.Gson;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import pl.ynfuien.scavengerHunt.Lang;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
+import pl.ynfuien.scavengerHunt.core.dto.HuntDTO;
+import pl.ynfuien.scavengerHunt.core.tasks.Task;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
 import java.util.HashMap;
 
 public class Hunts {
     private final ScavengerHunt instance;
+
+    private final NamespacedKey huntNamespacedKey;
+    private final static Gson GSON = new Gson();
 
     private boolean autoAssign = true;
     private int minTaskAmount = 5;
@@ -23,6 +32,7 @@ public class Hunts {
 
     public Hunts(ScavengerHunt instance) {
         this.instance = instance;
+        this.huntNamespacedKey = new NamespacedKey(instance, "active-hunt");
         this.rewards = new Rewards(instance);
     }
 
@@ -89,11 +99,27 @@ public class Hunts {
     private Hunt getSavedHunt(Player player) {
         if (hunts.containsKey(player)) return hunts.get(player);
 
-        return null;
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+
+        String json = pdc.get(huntNamespacedKey, PersistentDataType.STRING);
+        if (json == null) return null;
+
+        HuntDTO dto = GSON.fromJson(json, HuntDTO.class);
+        return dto.fromDTO(instance, player);
     }
 
     public void saveHunt(Player player) {
-        player.
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+
+        Hunt hunt = hunts.get(player);
+        if (hunt == null) {
+            pdc.remove(huntNamespacedKey);
+            return;
+        }
+
+        HuntDTO dto = new HuntDTO(hunt);
+        String json = GSON.toJson(dto);
+        pdc.set(huntNamespacedKey, PersistentDataType.STRING, json);
     }
 
     public void deleteHunt(Player player) {

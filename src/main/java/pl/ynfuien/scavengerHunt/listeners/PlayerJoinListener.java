@@ -21,6 +21,6 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        hunts.autoAssignNewHunt(player);
+        if (hunts.getCurrentHunt(player) == null) hunts.autoAssignNewHunt(player);
     }
 }

@@ -23,7 +23,7 @@ public class BiomeTasks implements ITaskGenerator {
     private final List<Biome> biomes = new ArrayList<>();
     private final Set<Biome> blacklist = new HashSet<>();
 
-    private final Registry<@NotNull Biome> biomeRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
+    public static final Registry<@NotNull Biome> biomeRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
 
     public BiomeTasks(ScavengerHunt instance) {
         this.instance = instance;
