@@ -52,7 +52,6 @@ public class BiomeTasks implements ITaskGenerator {
             blacklist.add(biome);
         }
 
-        YLogger.info("Loaded find-biome!");
         return true;
     }
 

@@ -71,7 +71,7 @@ public class Hunt {
         huntCheckInterval = Bukkit.getGlobalRegionScheduler().runAtFixedRate(instance, (task) -> {
             if (getTimeLeft() <= 0) {
                 Lang.Message.HUNT_ENDED.send(player);
-                finishTheHunt();
+                finishTheHunt(true);
                 return;
             }
 
@@ -86,14 +86,15 @@ public class Hunt {
         }, 20 * 2, 20 * 2);
     }
 
-    private void finishTheHunt() {
-        hunts.deleteHunt(player);
+    public void finishTheHunt(boolean autoAssign) {
+        hunts.abortHunt(player);
         huntCheckInterval.cancel();
-        hunts.saveHunt(player);
 
-        Bukkit.getGlobalRegionScheduler().runDelayed(instance, (task) -> {
-            hunts.autoAssignNewHunt(player);
-        }, 20 * 5);
+        if (autoAssign) {
+            Bukkit.getGlobalRegionScheduler().runDelayed(instance, (task) -> {
+                hunts.autoAssignNewHunt(player);
+            }, 20 * 5);
+        }
     }
 
     public Player getPlayer() {
@@ -146,7 +147,7 @@ public class Hunt {
             Lang.Message.HUNT_COMPLETED_REWARD_ITEM.send(player, placeholders);
         }
 
-        finishTheHunt();
+        finishTheHunt(true);
     }
 
     public boolean handleTask(Class<? extends Task<?>> taskClass, Object goal) {

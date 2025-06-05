@@ -101,7 +101,6 @@ public class Rewards {
             }
         }
 
-        YLogger.info("Loaded hunt rewards!");
         return true;
     }
 

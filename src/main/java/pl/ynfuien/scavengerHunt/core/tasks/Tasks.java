@@ -56,7 +56,6 @@ public class Tasks {
             return false;
         }
 
-        YLogger.info("Loaded tasks!");
         return true;
     }
 

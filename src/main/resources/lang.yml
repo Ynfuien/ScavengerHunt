@@ -47,3 +47,12 @@ command-hunt-info-task-biome: '<white>- <aqua>find <dark_aqua>{biome-display-nam
 command-hunt-info-task-biome-completed: '<dark_gray><strikethrough>- find {biome-display-name-lower-case} biome'
 command-hunt-info-footer: '<gray>Time left: {hours-left}h and {minutes-left}m'
 command-hunt-info-no-assignment: '{prefix} <aqua>You have no hunt assigned!'
+
+command-hunt-assign-usage: '{prefix} <gray>Command usage: /{command} assign <player>'
+command-hunt-assign-no-player: '{prefix} <red>Provided player isn''t online!'
+command-hunt-assign-success: '{prefix} <aqua>Successfully assigned a new hunt to <dark_aqua>{player-name}</dark_aqua>!'
+
+command-hunt-abort-usage: '{prefix} <gray>Command usage: /{command} abort <player>'
+command-hunt-abort-no-player: '{prefix} <red>Provided player isn''t online!'
+command-hunt-abort-no-hunt: '{prefix} <red>Provided player doesn''t have any hunt assigned!'
+command-hunt-abort-success: '{prefix} <dark_aqua>{player-name}''s <aqua>hunt has been <red>aborted</red>!'

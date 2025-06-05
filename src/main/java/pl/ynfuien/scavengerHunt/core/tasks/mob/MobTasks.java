@@ -43,7 +43,6 @@ public class    MobTasks implements ITaskGenerator {
             blacklist.add(mob);
         }
 
-        YLogger.info("Loaded kill-mob!");
         return true;
     }
 

@@ -9,7 +9,6 @@ import org.bukkit.persistence.PersistentDataType;
 import pl.ynfuien.scavengerHunt.Lang;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.scavengerHunt.core.dto.HuntDTO;
-import pl.ynfuien.scavengerHunt.core.tasks.Task;
 import pl.ynfuien.ydevlib.messages.YLogger;
 
 import java.util.HashMap;
@@ -79,6 +78,7 @@ public class Hunts {
 
         Hunt hunt = new Hunt(instance, player, tasks);
         hunts.put(player, hunt);
+        saveHunt(player);
 
         Lang.Message.HUNT_ASSIGNED.send(player);
         return hunt;
@@ -122,7 +122,13 @@ public class Hunts {
         pdc.set(huntNamespacedKey, PersistentDataType.STRING, json);
     }
 
-    public void deleteHunt(Player player) {
+    public void abortHunt(Player player) {
+        hunts.remove(player);
+        saveHunt(player);
+    }
+
+    public void removeHuntFromCache(Player player) {
+        saveHunt(player);
         hunts.remove(player);
     }
 

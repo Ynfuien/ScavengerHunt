@@ -30,7 +30,24 @@ public class Lang extends LangBase {
         COMMAND_HUNT_INFO_TASK_BIOME_COMPLETED,
         COMMAND_HUNT_INFO_FOOTER,
         COMMAND_HUNT_INFO_NO_ASSIGNMENT,
+        COMMAND_HUNT_ASSIGN_USAGE,
+        COMMAND_HUNT_ASSIGN_NO_PLAYER,
+        COMMAND_HUNT_ASSIGN_SUCCESS,
+        COMMAND_HUNT_ABORT_USAGE,
+        COMMAND_HUNT_ABORT_NO_PLAYER,
+        COMMAND_HUNT_ABORT_NO_HUNT,
+        COMMAND_HUNT_ABORT_SUCCESS,
         ;
+
+        /**
+         * command-hunt-assign-usage: '{prefix} <gray>Command usage: /{command} assign <player>'
+         * command-hunt-assign-no-player: '{prefix} <red>Provided player isn''t online!'
+         * command-hunt-assign-success: '{prefix} <aqua>Successfully assigned a new hunt to <dark_aqua>{player-name}</dark_aqua>!'
+         *
+         * command-hunt-abort-usage: '{prefix} <gray>Command usage: /{command} abort <player>'
+         * command-hunt-abort-no-player: '{prefix} <red>Provided player isn''t online!'
+         * command-hunt-abort-success: '{prefix} <dark_aqua>{player-name}''s <aqua>hunt has been <red>aborted</red>!'
+         */
 
         /**
          * Gets name/path of this message.

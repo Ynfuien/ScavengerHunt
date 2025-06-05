@@ -16,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import pl.ynfuien.scavengerHunt.Lang;
 import pl.ynfuien.scavengerHunt.ScavengerHunt;
 import pl.ynfuien.scavengerHunt.commands.Subcommand;
+import pl.ynfuien.scavengerHunt.commands.main.subcommands.AbortSubcommand;
+import pl.ynfuien.scavengerHunt.commands.main.subcommands.AssignSubcommand;
 import pl.ynfuien.scavengerHunt.commands.main.subcommands.ReloadSubcommand;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunt;
 import pl.ynfuien.scavengerHunt.core.hunts.Hunts;
@@ -39,8 +41,9 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         this.hunts = instance.getHunts();
 
         this.subcommands = new Subcommand[] {
+                new AssignSubcommand(instance),
+                new AbortSubcommand(instance),
                 new ReloadSubcommand(instance),
-//                new GiveSubcommand(instance)
         };
     }
 

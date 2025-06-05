@@ -44,8 +44,6 @@ public class ItemTasks implements ITaskGenerator {
         }
 
         consume = config.getBoolean("consume");
-
-        YLogger.info("Loaded get-item!");
         return true;
     }
 
